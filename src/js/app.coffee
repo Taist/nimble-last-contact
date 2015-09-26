@@ -1,9 +1,3 @@
-Q = require 'q'
-
-require('react/lib/DOMProperty').ID_ATTRIBUTE_NAME = 'data-vrtl-reactid'
-
-extend = require 'react/lib/Object.assign'
-
 appData = {}
 
 app =
@@ -14,23 +8,35 @@ app =
   init: (api) ->
     app.api = api
 
-    app.exapi.setUserData = Q.nbind api.userData.set, api.userData
-    app.exapi.getUserData = Q.nbind api.userData.get, api.userData
+    wrapByPromise = (object, method) ->
+      (args...) ->
+        return new Promise (resolve, reject) ->
+          args.push (error, result) -> if error then reject error else resolve result
+          object[method].apply object, args
 
-    app.exapi.setCompanyData = Q.nbind api.companyData.set, api.companyData
-    app.exapi.getCompanyData = Q.nbind api.companyData.get, api.companyData
+    app.exapi.setUserData = wrapByPromise api.userData, 'set'
+    app.exapi.setUserData = wrapByPromise api.userData, 'get'
 
-    app.exapi.setPartOfCompanyData = Q.nbind api.companyData.setPart, api.companyData
-    app.exapi.getPartOfCompanyData = Q.nbind api.companyData.getPart, api.companyData
+    app.exapi.setCompanyData = wrapByPromise api.companyData, 'set'
+    app.exapi.getCompanyData = wrapByPromise api.companyData, 'get'
+
+    app.exapi.setPartOfCompanyData = wrapByPromise api.companyData, 'setPart'
+    app.exapi.getPartOfCompanyData = wrapByPromise api.companyData, 'getPart'
 
     app.exapi.updateCompanyData = (key, newData) ->
       app.exapi.getCompanyData key
+
       .then (storedData) ->
         updatedData = {}
-        extend updatedData, storedData, newData
-        app.exapi.setCompanyData key, updatedData
-        .then ->
-          updatedData
+        Object.assign updatedData, storedData, newData
+
+        Promise.all([
+          updatedData,
+          app.exapi.setCompanyData key, updatedData
+        ])
+
+      .then (data) ->
+        data[0]
 
   actions: {}
 
