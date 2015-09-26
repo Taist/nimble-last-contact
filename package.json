@@ -3,7 +3,9 @@
   "version": "0.0.1",
   "author": "Vladimir Rybakov",
   "description": "Taist bootstrap addon",
-  "dependencies": {},
+  "dependencies": {
+    "baobab": "^1.1.2"
+  },
   "devDependencies": {
     "browserify": "~4.1.5",
     "grunt": "~0.4.0",
