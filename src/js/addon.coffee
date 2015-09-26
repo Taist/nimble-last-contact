@@ -40,6 +40,7 @@ showLastContactedPerson = (contactId, userId) ->
       if lastContactContainer
         lastContactContainer.style.paddingLeft = '12px'
         div = document.createElement 'div'
+        div.style.color = 'black'
         lastContactContainer.appendChild div
 
         #get user form the state

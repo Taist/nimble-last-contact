@@ -2612,6 +2612,7 @@ showLastContactedPerson = function(contactId, userId) {
       if (lastContactContainer) {
         lastContactContainer.style.paddingLeft = '12px';
         div = document.createElement('div');
+        div.style.color = 'black';
         lastContactContainer.appendChild(div);
         userCursor = state.select(['users', userId]);
         user = userCursor.get();
