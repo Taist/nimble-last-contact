@@ -1,0 +1,8 @@
+{
+  "id": "nimble-last-contact",
+  "siteName": "Nimble",
+  "title": "Last contact person",
+  "js": "addon.js",
+  "shortDescription": "Shows person contacted with certain contact",
+  "siteRegexp": "nimble\\.com"
+}
