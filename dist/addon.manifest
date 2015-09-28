@@ -4,6 +4,6 @@
   "title": "Last contacted by",
   "js": "addon.js",
   "shortDescription": "Shows who was last to reach a contact",
-  "siteRegexp": "nimble\\.com"
+  "siteRegexp": "nimble\\.com",
   "description": "description.md"
 }
