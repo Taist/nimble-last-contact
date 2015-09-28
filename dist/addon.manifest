@@ -5,5 +5,5 @@
   "js": "addon.js",
   "shortDescription": "Shows who was last to reach a contact",
   "siteRegexp": "nimble\\.com"
-  "description": "./description.md"
+  "description": "description.md"
 }
