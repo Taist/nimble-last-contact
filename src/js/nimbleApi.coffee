@@ -30,7 +30,10 @@ nimbleAPI =
     sendNimbleRequest "/api/v1/contacts/detail/?id=#{contactId}"
 
   getUserById: (userId) ->
-    sendNimbleRequest "/api/users/#{userId}"
+    sendNimbleRequest '/api/users/?page=1&per_page=1000&verbosity=list'
+    .then (response) ->
+      users = response.resources?.filter (user) -> user.id is userId
+      users[0]
 
 module.exports =
   init: (_app, propertyName) ->

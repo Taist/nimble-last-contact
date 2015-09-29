@@ -1,3 +1,4 @@
+moment = require 'moment'
 
 app = require './app'
 state = require './state'
@@ -24,7 +25,7 @@ findParent = (element, selector) ->
 DOMObserver = require './helpers/domObserver'
 elementObserver = new DOMObserver()
 
-showLastContactedPerson = (contactId, userId) ->
+showLastContactedPerson = (contactId, userId, tstamp) ->
   #find container
   selector = ".ContactsGrid [__gwt_row] .contact-name[href$=\"#{contactId}\"]"
   elementObserver.waitElement selector, (contactLink) ->
@@ -38,7 +39,10 @@ showLastContactedPerson = (contactId, userId) ->
 
       #find last contact container
       if lastContactContainer
+        lastContactContainer.innerHTML = '';
+
         lastContactContainer.style.paddingLeft = '12px'
+
         div = document.createElement 'div'
         div.style.color = 'black'
         lastContactContainer.appendChild div
@@ -48,11 +52,11 @@ showLastContactedPerson = (contactId, userId) ->
         user = userCursor.get()
 
         if user
-          div.innerText = user.name or ''
+          div.innerHTML = "#{moment(tstamp).fromNow()}<br>#{(user.name or '')}"
         else
           userCursor.on 'update', (event) ->
             userCursor.off 'update'
-            div.innerText = event.data.data.name or ''
+            div.innerHTML = "#{moment(tstamp).fromNow()}<br>#{(event.data.data.name or '')}"
 
 waitingForContactsRequest = ->
   proxy.onRequestFinish responseHandler: (request) ->
@@ -64,10 +68,11 @@ waitingForContactsRequest = ->
         return
 
       result.resources?.forEach (contact) ->
-        {id, last_contacted} = contact
-        if(last_contacted?.user_id?)
-          contactsCursor.update "#{id}": last_contacted: $set: last_contacted
-          showLastContactedPerson id, last_contacted.user_id
+        console.log(contact.company_last_contacted);
+        {id, company_last_contacted} = contact
+        if(company_last_contacted?.out?.user_id?)
+          contactsCursor.update "#{id}": last_contacted: $set: company_last_contacted.out
+          showLastContactedPerson id, company_last_contacted.out.user_id, company_last_contacted.out.tstamp
 
 addonEntry =
   start: (_taistApi, entryPoint) ->

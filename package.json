@@ -4,7 +4,8 @@
   "author": "Vladimir Rybakov",
   "description": "Taist bootstrap addon",
   "dependencies": {
-    "baobab": "^1.1.2"
+    "baobab": "^1.1.2",
+    "moment": "^2.10.6"
   },
   "devDependencies": {
     "browserify": "~4.1.5",
