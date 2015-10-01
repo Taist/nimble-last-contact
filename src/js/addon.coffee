@@ -41,7 +41,7 @@ showLastContactedPerson = (contactId, userId, tstamp) ->
       if lastContactContainer
         lastContactContainer.innerHTML = '';
 
-        lastContactContainer.style.paddingLeft = '12px'
+        lastContactContainer.style.padding = '6px 0 6px 12px';
 
         div = document.createElement 'div'
         div.style.color = 'black'
